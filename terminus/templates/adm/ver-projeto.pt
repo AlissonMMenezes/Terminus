@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+  <head>
+    <title>Terminus - Gerenciamento de Projetos</title>
+
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/static/jquery.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  </head>
+
+ <body>
+ 
+<nav tal:define="header load: header-adm.pt" metal:use-macro="header"></nav>
+
+<div class="container">
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-info">Nome do Projeto: <strong>${resultado.Projetos.nome}</strong> Gerente do Projeto: <strong>${resultado.Gerentes.nome}</strong> Cliente: <strong>${resultado.Clientes.nome}</strong> Data de Término: <strong>11/02/2015</strong> Valor: <strong>${resultado.Projetos.valor}</strong></li> 
+  </ul>
+
+  <div class="row">
+  <div class="col-md-7" role="main">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Objetivo</h3>
+    </div>
+    <div class="panel-body">
+      ${resultado.Projetos.objetivo}
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Como era</h3>
+    </div>
+    <div class="panel-body">
+      ${resultado.Projetos.asis}
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Como será</h3>
+    </div>
+    <div class="panel-body">
+      ${resultado.Projetos.tobe}
+    </div>
+  </div>
+  </div>
+  <div class="col-md-5">
+      <div class="panel">
+
+	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#VerAlteracoes">
+	    <span class="badge"><span tal:replace="len(Alteracoes)"/></span> Solicitações de Alteração
+	</button>
+	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#AddTarefa">
+	    <span class="glyphicon glyphicon-plus"></span> Adicionar Tarefa
+	</button>
+
+      </div>
+      
+      <div class="panel panel-default">
+      <div class="panel-heading">
+      <h3 class="panel-title">Tarefas</h3>
+      </div>
+      <div class="panel-body">
+      <ul class="list-group">
+      <tal:block tal:repeat="t Tarefas">	
+	<form action="/adm/projeto/${t.Tarefas.id}/finalizar/1/${resultado.Projetos.id}" method="post">
+	<tal:block tal:switch="t.Tarefas.status">
+		<li tal:case="1" class="list-group-item list-group-item-success" >	
+		  <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>${t.Tarefas.descricao} - ${t.Gerentes.nome}
+		</li>      
+		<li tal:case="0" class="list-group-item" >	
+		  <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>${t.Tarefas.descricao} - ${t.Gerentes.nome}
+		</li>      
+	  </tal:block>
+	</form>
+      </tal:block>
+      </ul>
+      </div>
+      </div>
+  </div>
+
+  </div>
+</div>
+
+<form action="addtarefa" method="get">
+<div class="modal fade" id="AddTarefa" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Adicionar Tarefa</h4>
+      </div>
+      <div class="modal-body">
+	<div class="form-group">
+	  <input type="hidden" value="${resultado.Projetos.id}" name="Projeto">
+	  <input type="hidden" value="0" name="Status">
+	  <input type="text" class="form-control" name="Descricao" placeholder="Digite a tarefa">	  	  
+	</div>
+	<div class="form-group">
+	  <select class="form-control" name="Gerente">
+	  <tal:block tal:repeat="g gerentes">	
+	    <option value="${g.id}">${g.nome}</option>	    	    
+	    </tal:block>	  	  
+	  </select>
+	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+<form action="/adm/${resultado.Clientes.id}/responderalteracao/${resultado.Projetos.id}" method="post">
+<div class="modal fade" id="VerAlteracoes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Solicitar Alteração</h4>
+      </div>
+      <div class="modal-body">
+	<div class="form-group">
+	  <input type="hidden" value="${resultado.Projetos.id}" name="pid">
+	  <input type="hidden" value="${resultado.Clientes.id}" name="cid">
+	  <input type="hidden" value="1" name="Interacao">
+	  <tal:block tal:repeat="a Alteracoes">
+	    <tal:block tal:switch="a.Alteracoes.interacao">
+	      <div tal:case="0" class="alert alert-info" role="alert">${resultado.Clientes.nome} - ${a.Alteracoes.descricao}</div>
+	      <div tal:case="1" class="alert alert-success" role="alert">${resultado.Gerentes.nome} - ${a.Alteracoes.descricao}</div>
+	    </tal:block>	    
+	  </tal:block>
+	  <input type="text" class="form-control" name="Descricao" placeholder="Descreva o que você deseja alterar">	  	  
+	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+</body>
+</html>

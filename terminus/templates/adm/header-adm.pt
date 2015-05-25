@@ -1,0 +1,14 @@
+<nav metal:define-macro="cabecalho" class="navbar navbar-default" role="navigation">
+<a class="navbar-brand" href="/adm">Terminus</a>
+
+<ul class="nav navbar-nav navbar-right">
+	<li><a href="/adm/novoprojeto">Novo Projeto</a></li>
+	<li><a href="/adm/gerentes">Gerentes</a></li>
+	<li><a href="/adm/clientes">Clientes</a></li>
+	<li><a href="#">Alterar Senha</a></li>
+	<li><a href="/adm/configuracoes">Configurações</a></li>
+	<li><a href="${request.application_url}/logout">Sair</a></li>
+
+</ul>
+<p class="navbar-text "><a href="#" class="navbar-link">${request.session['logado']}</a></p>	
+</nav>

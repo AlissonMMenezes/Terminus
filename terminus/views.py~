@@ -1,0 +1,139 @@
+from pyramid.response import Response
+from pyramid.httpexceptions import HTTPFound
+from pyramid.view import view_config
+from pyramid.view import (
+    view_config,
+    forbidden_view_config,
+    )
+
+from pyramid.security import (
+    remember,
+    forget,
+    )
+
+from .ClassesDAO.GerentesDAO import *
+from .ClassesDAO.ClientesDAO import *
+from .ClassesDAO.ProjetosDAO import *
+from .ClassesDAO.TarefasDAO import *
+from .ClassesDAO.LoginDAO import *
+
+
+
+@view_config(route_name='home', renderer='templates/cliente-index.pt', permission="clientes")
+def index_view(request):
+  p = ProjetosDAO()
+  retorno = p.listar()    
+  return {'resultado': retorno}    
+
+@view_config(route_name='adm', renderer='templates/adm/index.pt', permission="gerentes")
+def indexadm_view(request):
+  p = ProjetosDAO()
+  retorno = p.listar()
+  return {'resultado': retorno}    
+
+
+@view_config(route_name='novoprojeto', renderer='templates/adm/novo-projeto.pt', permission="gerentes")
+def novoprojeto_view(request):
+    g = GerentesDAO()
+    c = ClientesDAO()
+    gerentes = g.listar()
+    clientes = c.listar()
+    return {'gerentes': gerentes, 'clientes': clientes}
+
+@view_config(route_name='addprojeto', renderer='templates/adm/novo-projeto.pt', permission="gerentes")
+def addprojeto_view(request):
+    p = ProjetosDAO()
+    g = GerentesDAO()
+    c = ClientesDAO()
+    gerentes = g.listar()
+    clientes = c.listar()
+    print (request.POST)
+    r = p.salvar(request.POST)
+    return {'retorno': r,"gerentes":gerentes,"clientes":clientes}
+
+@view_config(route_name='projeto', renderer='templates/adm/ver-projeto.pt', permission="gerentes")
+def verprojeto_view(request):
+    p = ProjetosDAO()
+    t = TarefasDAO()
+    g = GerentesDAO()
+    gerentes = g.listar()
+    tarefas = t.listar(request.matchdict)
+    projeto = p.buscar(request.matchdict)
+    return {'resultado': projeto,"Tarefas":tarefas,"gerentes":gerentes}
+  
+@view_config(route_name='tarefa', renderer='templates/adm/ver-projeto.pt',permission="gerentes")
+def addtarefa_view(request):    
+    t = TarefasDAO()
+    v = request.GET
+    r = t.salvar(request.GET)
+    return HTTPFound(location="/adm/projeto/"+v["Projeto"]+"/")
+
+@view_config(route_name='gerentes', renderer='templates/adm/gerentes.pt', permission="gerentes")
+def gerentes_view(request):    
+    g = GerentesDAO()
+    r = g.listar()
+    return {'resultado': r}
+
+@view_config(route_name='novogerente', renderer='templates/adm/novo-gerente.pt', permission="gerentes")
+def novogerente_view(request):     
+    return {'resultado': "lol"}
+
+@view_config(route_name='addgerente', renderer='templates/adm/novo-gerente.pt', permission="gerentes")
+def addgerente_view(request):    
+    g = GerentesDAO()
+    print (request.POST)
+    r = g.salvar(request.POST)
+    return {'retorno': r}
+
+@view_config(route_name='clientes', renderer='templates/adm/clientes.pt',permission="gerentes")
+def clientes_view(request):    
+    c = ClientesDAO()
+    r = c.listar()
+    return {'resultado': r}
+  
+@view_config(route_name='novocliente', renderer='templates/adm/novo-cliente.pt',permission="gerentes")
+def novocliente_view(request):     
+    return {'resultado': "lol"}
+
+@view_config(route_name='addcliente', renderer='templates/adm/novo-cliente.pt', permission="gerentes")
+def addcliente_view(request):     
+    c = ClientesDAO()
+    print (request.POST)
+    r = c.salvar(request.POST)
+    return {'retorno': r}
+  
+@view_config(route_name='login-gerentes', renderer='templates/adm/login.pt')
+@forbidden_view_config(renderer='templates/adm/login.pt')
+def login(request):
+    l = LoginDAO()
+    login_url = request.resource_url(request.context, 'login')
+    referrer = request.url
+    if referrer == login_url:
+        referrer = '/adm'
+    message = ''
+    login = ''
+    password = ''
+    
+    if 'form.submitted' in request.params:
+		login = request.params['login']
+		password = request.params['password']
+		USER = l.LoginGerente(login)
+		print (USER.get(login))
+		if USER.get(login) == password:
+			headers = remember(request, login)
+			return HTTPFound(location = "s/adm",
+								headers = headers)
+		message = 'Falha ao acessar'
+
+    return dict(
+        message = message,
+        url = request.application_url + '/adm/login',
+        login = login,
+        password = password,
+        )
+
+@view_config(name='logout')
+def logout(request):
+    headers = forget(request)
+    return HTTPFound(location = request.resource_url(request.context),
+                     headers = headers)

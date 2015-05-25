@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="pyramid web application">
+    <meta name="author" content="Pylons Project">
+    <link rel="shortcut icon" href="${request.static_url('terminus:static/pyramid-16x16.png')}">
+
+    <title>Terminus - Gerenciamento de Projetos</title>
+
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="${request.static_url('terminus:static/theme.css')}" rel="stylesheet">
+
+  </head>
+
+ <body>
+<nav tal:define="header load: header-adm.pt" metal:use-macro="header"></nav>
+<div class="container">
+<div class="panel">
+      <a href="novogerente">
+      <button type="button" class="btn btn-default">
+	  <span class="glyphicon glyphicon-plus"></span> Novo Gerente
+      </button>
+      </a>
+
+    </div>
+<td>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">Clientes</div>
+  <div class="panel-body">
+     <table class="table table-striped">
+	<thead>
+	    <tr>
+		<th>Id</th>
+		<th>Nome</th>
+		<th>Email</th>
+		<th>Telefone</th>
+		<th>Area</th>
+		<th></th>
+	    </tr>
+	</thead>
+      <tbody>
+	<tal:block tal:repeat="r resultado">	
+	  <tr><td>${r.id}</td><td>${r.nome}</td><td>${r.email}</td><td>${r.telefone}</td><td>${r.area}</td><td>
+		<a href="/adm/${r.id}/editargerente"><button type="button" class="btn btn-success">Editar</button></a>
+		<a href="/adm/${r.id}/deletargerente"><button type="button" class="btn btn-danger">Excluir</button></a></td></tr>
+	</tal:block>	
+      </tbody>
+     </table>
+
+</div>
+
+</body>
+
+</html>

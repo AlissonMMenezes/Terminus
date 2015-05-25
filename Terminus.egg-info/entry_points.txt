@@ -1,0 +1,5 @@
+      [paste.app_factory]
+      main = terminus:main
+      [console_scripts]
+      initialize_Terminus_db = terminus.scripts.initializedb:main
+      

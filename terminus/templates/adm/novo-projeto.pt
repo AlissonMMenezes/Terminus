@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+  <head>
+
+    <title>Terminus - Gerenciamento de Projetos</title>
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      li{
+	list-style-type: none;
+      }
+    </style>
+    <script src="/static/jquery.min.js"></script>
+    <script src="/static/jqueryui/jquery-ui.js"></script>
+     <script>
+	$(function() {
+	var gerentes = [ 
+	  <tal:block tal:repeat="g gerentes">	
+	    "${g.nome}",
+	  </tal:block>	  	  
+	  ];
+	$( ".gerentes" ).autocomplete({
+	  source: gerentes
+	  });	  
+	});
+	$(function() {
+	var clientes = [ 
+	  <tal:block tal:repeat="c clientes">	
+	    "${c.nome}",
+	  </tal:block> 
+	  ];
+	$( "#clientes" ).autocomplete({
+	  source: clientes
+	  });	  
+	});
+    </script>
+
+
+  </head>
+
+ <body>
+<nav tal:define="header load: header-adm.pt" metal:use-macro="header"></nav>
+<div class="container">
+<div tal:condition="retorno" tal:attributes="class retorno.status" class="alert alert-success" role="alert"><span tal:replace="retorno.message"/></div>
+<form class="form-horizontal" role="form" method="POST" action="addprojeto">
+<div class="form-group">
+  <input type="hidden" class="form-control" name="Aprovacao" value="Aguardando">
+  <input type="hidden" class="form-control" name="Status" value="Parado">
+  
+  <div class="form-group">
+  <label class="col-sm-1 control-label">Gerente</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control gerentes" name="Gerente" placeholder="Gerente do Projeto">
+    </div>
+  </div>
+  
+  <div class="form-group">
+  <label class="col-sm-1 control-label">Cliente</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="Cliente" placeholder="Cliente" id="clientes">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-1 control-label">Nome</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="Nome" placeholder="Nome do projeto">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-1 control-label">Objetivo</label>
+    <div class="col-sm-10">
+	<textarea class="form-control" name="Objetivo" rows="3" placeholder="Digite o objetivo do projeto"></textarea>
+    </div>
+  </div>
+<div class="form-group">
+    <label for="inputPassword3" class="col-sm-1 control-label">Como é</label>
+    <div class="col-sm-10">
+	<textarea class="form-control" name="Asis" rows="3" placeholder="Descreva como é o cenário atual"></textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-1 control-label">Como será</label>
+    <div class="col-sm-10">
+	<textarea class="form-control" name="Tobe" rows="3" placeholder="Descreva quais serão as mudanças"></textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-1 control-label">Valor</label>
+    <div class="col-sm-10">
+	<input type="text" class="form-control" name="Valor" placeholder="Valor do Projeto">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-1 col-md-10">
+      <button type="submit" class="btn btn-default">Salvar</button>
+    </div>
+  </div>
+
+</form>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+from pyramid.config import Configurator
+from sqlalchemy import engine_from_config
+from pyramid.authentication import AuthTktAuthenticationPolicy
+from pyramid.authorization import ACLAuthorizationPolicy
+
+from .models import (
+    DBSession,
+    Base,
+    )
+from .ClassesDAO.LoginDAO import *
+
+
+def main(global_config, **settings):
+    """ This function returns a Pyramid WSGI application.
+    """
+    l = LoginDAO()
+    engine = engine_from_config(settings, 'sqlalchemy.')
+    DBSession.configure(bind=engine)
+    Base.metadata.bind = engine
+    authn_policy = AuthTktAuthenticationPolicy('sosecret', callback=l.groupfinder, hashalg='sha512')
+    authz_policy = ACLAuthorizationPolicy()
+    config = Configurator(settings=settings, root_factory="terminus.models.Login")
+    config.set_authentication_policy(authn_policy)
+    config.set_authorization_policy(authz_policy)
+    config.include('pyramid_chameleon')
+    config.add_static_view('static', 'static', cache_max_age=3600)
+    config.add_route('home', '/')
+    config.add_route('adm', '/adm')
+    config.add_route('clientes', '/adm/clientes')
+    config.add_route('gerentes', '/adm/gerentes')
+    config.add_route('novoprojeto', '/adm/novoprojeto')
+    config.add_route('novogerente', '/adm/novogerente')
+    config.add_route('addgerente', '/adm/addgerente')
+    config.add_route('novocliente', '/adm/novocliente')
+    config.add_route('addcliente', '/adm/addcliente')
+    config.add_route('projeto', '/adm/projeto/{id}/')
+    config.add_route('addprojeto', '/adm/addprojeto')
+    config.add_route('tarefa', '/adm/projeto/{id}/addtarefa')
+    config.scan()
+    return config.make_wsgi_app()
+

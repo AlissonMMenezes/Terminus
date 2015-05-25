@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="pyramid web application">
+    <meta name="author" content="Pylons Project">
+    <link rel="shortcut icon" href="${request.static_url('terminus:static/pyramid-16x16.png')}">
+
+    <title>Terminus - Gerenciamento de Projetos</title>
+    <script src="/static/jquery.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="${request.static_url('terminus:static/theme.css')}" rel="stylesheet">
+
+  </head>
+
+ <body>
+<nav tal:define="header load: header-clientes.pt" metal:use-macro="header"></nav>
+
+<div class="container">
+  <ul class="list-group">
+    <li class="list-group-item list-group-item-success">
+      Nome do Projeto: <strong>${resultado.Projetos.nome}</strong> Gerente do Projeto: <strong>${resultado.Gerentes.nome}</strong> Status: <strong>${resultado.Projetos.aprovacao}</strong> Valor: <strong>${resultado.Projetos.valor}</strong>
+    </li> 
+  </ul>
+
+  <div class="row">
+  <div class="col-md-7" role="main">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Objetivo</h3>
+    </div>
+    <div class="panel-body">
+      ${resultado.Projetos.objetivo}
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Como era</h3>
+    </div>
+    <div class="panel-body">
+      ${resultado.Projetos.asis}
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Como será</h3>
+    </div>
+    <div class="panel-body">
+      ${resultado.Projetos.tobe}
+    </div>
+  </div>
+  </div>
+  <div class="col-md-5">
+      <div class="panel">
+
+	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#SolicitarAlteracao">
+	    <span class="glyphicon glyphicon-plus"></span> Solicitar Alteração <span class="badge"><span tal:replace="len(Alteracoes)"/></span> 
+	</button>
+
+      </div>
+      
+      <div class="panel panel-default">
+      <div class="panel-heading">
+      <h3 class="panel-title">Tarefas</h3>
+      </div>
+      <div class="panel-body">
+      <ul class="list-group">
+      <ul class="list-group">
+      <tal:block tal:repeat="t Tarefas">	
+	<tal:block tal:switch="t.Tarefas.status">
+		<li tal:case="1" class="list-group-item list-group-item-success" >	
+		  <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>${t.Tarefas.descricao} - ${t.Gerentes.nome}
+		</li>      
+		<li tal:case="0" class="list-group-item" >	
+		  <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span></button>${t.Tarefas.descricao} - ${t.Gerentes.nome}
+		</li>      
+	  </tal:block>
+      </tal:block>
+      </ul>
+      </ul>
+      </div>
+      </div>
+    
+  </div>
+
+  </div>
+</div>
+<form method="post" action="/${resultado.Clientes.id}/projetoaprovacao/${resultado.Projetos.id}">
+<tal:block tal:switch="resultado.Projetos.aprovacao">
+<div tal:case="'Aprovado'">
+</div>
+<nav tal:case="default" class="navbar navbar-default navbar-fixed-bottom navbar-inverse" role="navigation">
+  <input type="hidden" value="${resultado.Projetos.id}" name="pid">
+  <input type="hidden" value="${resultado.Clientes.id}" name="cid">
+  <ul class="pager">
+    <li><button type="submit" class="btn btn-success" name="aprovacao" value="Aprovado"> <span class="glyphicon glyphicon-ok"></span> Aprovar</button></li>
+    <li> - </li>
+    <li><button type="submit" class="btn btn-danger" name="aprovacao" value="Reprovado"> <span class="glyphicon glyphicon-remove"></span> Reprovar</button></li>
+  </ul>
+</nav>
+</tal:block>
+</form>
+
+<form action="/${resultado.Clientes.id}/solicitaralteracao/${resultado.Projetos.id}" method="post">
+<div class="modal fade" id="SolicitarAlteracao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Solicitar Alteração</h4>
+      </div>
+      <div class="modal-body">
+	<div class="form-group">
+	  <input type="hidden" value="${resultado.Projetos.id}" name="pid">
+	  <input type="hidden" value="${resultado.Clientes.id}" name="cid">
+	  <input type="hidden" value="0" name="Interacao">
+	  <tal:block tal:repeat="a Alteracoes">
+	    <tal:block tal:switch="a.Alteracoes.interacao">
+	      <div tal:case="0" class="alert alert-info" role="alert">${resultado.Clientes.nome} - ${a.Alteracoes.descricao}</div>
+	      <div tal:case="1" class="alert alert-success" role="alert">${resultado.Gerentes.nome} - ${a.Alteracoes.descricao}</div>
+	    </tal:block>	    
+	  </tal:block>
+	  <input type="text" class="form-control" name="Descricao" placeholder="Descreva o que você deseja alterar">	  	  
+	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+</body>
+</html>

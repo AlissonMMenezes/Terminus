@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="pyramid web application">
+    <meta name="author" content="Pylons Project">
+    <link rel="shortcut icon" href="${request.static_url('terminus:static/pyramid-16x16.png')}">
+
+    <title>Terminus - Gerenciamento de Projetos</title>
+
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  </head>
+
+ <body>
+ 
+<nav tal:define="header load: header-adm.pt" metal:use-macro="header"></nav>
+
+<div class="container">
+<div class="panel panel-success">
+  <div class="panel-heading">Aprovados</div>
+  <div class="panel-body">
+     <table class="table table-striped">
+	<thead>
+	    <tr>
+		<th>Id</th>
+		<th>Nome</th>
+		<th>Aprovação</th>
+		<th>Status</th>
+		<th>Cliente</th>
+		<th>Responsável</th>
+		<th></th>
+	    </tr>
+	</thead>
+      <tbody>
+	<tal:block tal:repeat="r resultado">	
+	  <tal:block tal:switch="r.Projetos.aprovacao">
+	    <tr tal:case="'Aprovado'"><td>${r.Projetos.id}</td><td>${r.Projetos.nome}</td><td>${r.Projetos.aprovacao}</td><td>${r.Projetos.status}</td><td>${r.Clientes.nome}</td><td>${r.Gerentes.nome}</td><td><a href="/adm/projeto/${r.Projetos.id}/"><button type="button" class="btn btn-primary">Ver</button></a></td></tr>
+	  </tal:block>
+	</tal:block>		
+      </tbody>
+     </table>
+  </div>
+</div>
+
+<div class="panel panel-info">
+  <div class="panel-heading">Aguardando</div>
+  <div class="panel-body">   
+	 <table class="table table-striped">
+	<thead>
+	    <tr>
+		<th>Id</th>
+		<th>Nome</th>
+		<th>Aprovação</th>
+		<th>Status</th>
+		<th>Cliente</th>
+		<th>Responsável</th>
+		<th></th>
+	    </tr>
+	</thead>
+      <tbody>
+	<tal:block tal:repeat="r resultado">	
+	  <tal:block tal:switch="r.Projetos.aprovacao">
+	    <tr tal:case="'Aguardando'"><td>${r.Projetos.id}</td><td>${r.Projetos.nome}</td><td>${r.Projetos.aprovacao}</td><td>${r.Projetos.status}</td><td>${r.Clientes.nome}</td><td>${r.Gerentes.nome}</td><td><a href="/adm/projeto/${r.Projetos.id}/"><button type="button" class="btn btn-primary">Ver</button></a></td></tr>
+	  </tal:block>
+	</tal:block>	
+      </tbody>
+     </table>
+  </div>
+</div>
+
+<div class="panel panel-danger">
+  <div class="panel-heading">Reprovados</div>
+  <div class="panel-body">
+<table class="table table-bordered">
+	 <table class="table table-striped">
+	<thead>
+	    <tr>
+		<th>Id</th>
+		<th>Nome</th>
+		<th>Aprovação</th>
+		<th>Status</th>
+		<th>Cliente</th>
+		<th>Responsável</th>
+		<th></th>
+	    </tr>
+	</thead>
+      <tbody>
+	<tal:block tal:repeat="r resultado">	
+	  <tal:block tal:switch="r.Projetos.aprovacao">
+	    <tr tal:case="'Reprovado'"><td>${r.Projetos.id}</td><td>${r.Projetos.nome}</td><td>${r.Projetos.aprovacao}</td><td>${r.Projetos.status}</td><td>${r.Clientes.nome}</td><td>${r.Gerentes.nome}</td><td><a href="/adm/projeto/${r.Projetos.id}/"><button type="button" class="btn btn-primary">Ver</button></a></td></tr>
+	  </tal:block>
+	</tal:block>		
+      </tbody>
+     </table>
+  </div>
+</div>
+</div>
+
+</body>
+
+</html>

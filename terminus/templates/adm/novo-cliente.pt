@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="${request.locale_name}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="pyramid web application">
+    <meta name="author" content="Pylons Project">
+    <link rel="shortcut icon" href="${request.static_url('terminus:static/pyramid-16x16.png')}">
+
+    <title>Terminus - Gerenciamento de Projetos</title>
+
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="${request.static_url('terminus:static/theme.css')}" rel="stylesheet">
+
+  </head>
+
+ <body>
+<nav tal:define="header load: header-adm.pt" metal:use-macro="header"></nav>
+
+<div class="container">
+	<div tal:condition="retorno" tal:attributes="class retorno.status" class="alert alert-success" role="alert"><span tal:replace="retorno.message"/></div>
+	<form class="form-horizontal" role="form" method="post" action="addcliente">
+	  <div class="form-group">
+	    <label for="inputEmail3" class="col-sm-1 control-label">Nome</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" name="Nome" placeholder="Nome do Cliente">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="inputEmail3" class="col-sm-1 control-label">Email</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" name="Email" placeholder="Email do cliente">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="inputPassword3" class="col-sm-1 control-label">Senha</label>
+	    <div class="col-sm-10">
+	      <input type="password" class="form-control" name="Senha" placeholder="Senha do Cliente">
+	    </div>
+	  </div>
+	 <div class="form-group">
+	    <label for="inputEmail3" class="col-sm-1 control-label">Empresa</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" name="Empresa" placeholder="Digite o site da empresa">
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <label for="inputEmail3" class="col-sm-1 control-label">Telefone</label>
+	    <div class="col-sm-10">
+	      <input type="text" class="form-control" name="Telefone" placeholder="Digite o telefone de contato com o cliente">
+	    </div>
+	  </div>
+	 <div class="form-group">
+	    <div class="col-sm-offset-1 col-md-10">
+	      <button type="submit" class="btn btn-default">Salvar</button>
+	    </div>
+	  </div>
+	</form>
+</div>
+
+</body>
+
+</html>

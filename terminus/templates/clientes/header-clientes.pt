@@ -1,0 +1,10 @@
+<nav class="navbar navbar-default" role="navigation">
+<a class="navbar-brand" href="/${request.matchdict['id']}/index">Terminus</a>
+<ul class="nav navbar-nav  navbar-right">
+	<li><a href="#" data-toggle="modal" data-target="#SolicitarProjeto">Solicitar Projeto</a></li>
+	<li><a href="/${request.matchdict['id']}/dados">Alterar Dados</a></li>
+	<li><a href="${request.application_url}/logout">Sair</a></li>
+
+</ul>
+<p class="navbar-text">Usuário: <a href="#" class="navbar-link">${request.session['logado']}</a></p>	
+</nav>
