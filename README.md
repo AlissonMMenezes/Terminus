@@ -12,3 +12,12 @@ Depencendias do Python
 
 easy_install pyramid_mailer
 
+Instalando a aplicação
+
+python setup.py install
+
+Executando o projeto
+
+pserver development.init --reload
+
+
