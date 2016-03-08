@@ -18,6 +18,6 @@ python setup.py install
 
 Executando o projeto
 
-pserver development.init --reload
+pserve development.ini --reload
 
 
