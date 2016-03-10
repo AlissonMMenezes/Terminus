@@ -9,10 +9,12 @@ Se for executado o procedimento padrão de deploy da aplicação ela será execu
  
  Urls:
  > / - Area do cliente
+ >
  > /adm - Area dos gerentes de projeto
  
  Usuário padrão:
  > **login:** admin@admin
+ >
  > **senha:** admin
 
 #### Sequência para instalação:
