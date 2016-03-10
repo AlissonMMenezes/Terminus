@@ -8,12 +8,12 @@ Terminus - Gerenciamento de Projetos é uma ferramenta bem básica desevolvida p
 Se for executado o procedimento padrão de deploy da aplicação ela será executada na porta 6543, que é a padrão definida pelo framework Pyramid.
  
  Urls:
- / - Area do cliente
- /adm - Area dos gerentes de projeto
+ > / - Area do cliente
+ > /adm - Area dos gerentes de projeto
  
  Usuário padrão:
- **login:** admin@admin
- **senha:** admin
+ > **login:** admin@admin
+ > **senha:** admin
 
 #### Sequência para instalação:
 
