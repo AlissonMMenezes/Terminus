@@ -1,22 +1,35 @@
 # Terminus
 
-Gerenciamento de Projetos
+Terminus - Gerenciamento de Projetos é uma ferramenta bem básica desevolvida para fins de estudo. Foi originada com o objetivo de entregar um trabalho na faculdade sobre gerenciamento de projetos e nela foram definidas algumas características como:
 
-Sequência para instalação:
+Área do Cliente
+Área dos Gerentes de Projeto
 
-Dependencias do S.O.
+Se for executado o procedimento padrão de deploy da aplicação ela será executada na porta 6543, que é a padrão definida pelo framework Pyramid.
+ 
+ Urls:
+ / - Area do cliente
+ /adm - Area dos gerentes de projeto
+ 
+ Usuário padrão:
+ login: admin@admin
+ senha: admin
+
+### Sequência para instalação:
+
+#### Dependencias do S.O.
 
 apt-get install python python-setuptools python-dev sqlite3
 
-Dependencias do Python
+#### Dependencias do Python
 
 easy_install pyramid_mailer
 
-Instalando a aplicação
+#### Instalando a aplicação
 
 python setup.py install
 
-Executando o projeto
+### Executando o projeto
 
 pserve development.ini --reload
 
