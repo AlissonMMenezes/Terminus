@@ -12,24 +12,24 @@ Se for executado o procedimento padrão de deploy da aplicação ela será execu
  /adm - Area dos gerentes de projeto
  
  Usuário padrão:
- login: admin@admin
- senha: admin
+ **login:** admin@admin
+ **senha:** admin
 
-### Sequência para instalação:
+#### Sequência para instalação:
 
 #### Dependencias do S.O.
 
 apt-get install python python-setuptools python-dev sqlite3
 
-#### Dependencias do Python
+##### Dependencias do Python
 
 easy_install pyramid_mailer
 
-#### Instalando a aplicação
+##### Instalando a aplicação
 
 python setup.py install
 
-### Executando o projeto
+#### Executando o projeto
 
 pserve development.ini --reload
 
