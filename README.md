@@ -44,4 +44,7 @@ python setup.py install
 
 pserve development.ini --reload
 
+Contato: alisson.machado@responsus.com.br
+
+http://responsus.com.br
 
