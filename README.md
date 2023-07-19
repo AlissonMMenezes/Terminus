@@ -5,7 +5,7 @@ Terminus - Gerenciamento de Projetos é uma ferramenta bem básica desevolvida p
 * Área do Cliente
 * Aprovação/Reprovação de Projeto
 * Solicitar Alteração
-* Solicatar Projeto
+* Solicitar Projeto
 * Área dos Gerentes de Projeto
 * Elaborar Projetos
 * Definir Gerentes de Projetos
